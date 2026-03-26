@@ -13,6 +13,9 @@
     },
     "ios": {
       "bundleIdentifier": "com.ashen.focustimer",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
       "supportsTablet": true
     },
     "android": {
@@ -23,7 +26,7 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -12,6 +12,8 @@
     },
     "production": {
       "autoIncrement": true
+      ,
+      "distribution": "internal"
     }
   },
   "submit": {
