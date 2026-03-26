@@ -16,5 +16,8 @@
     "react-native": "0.83.2",
     "react-native-svg": "^15.15.3"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "eas-cli": "^18.4.0"
+  }
 }
