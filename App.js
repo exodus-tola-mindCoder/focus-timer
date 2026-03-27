@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import CircularCountdown from './src/components/CircularCountdown';
 import { addDaysLocal, formatShortDate, getLocalISODate, parseLocalISODate } from './src/utils/date';
 import { getFocusTimerSummary, recordFocusCompletion } from './src/storage/focusTimerStorage';
+import MpesaPaymentScreen from './src/screens/MpesaPaymentScreen';
 
 const DEFAULT_MINUTES = 25;
 const TOTAL_SECONDS = DEFAULT_MINUTES * 60;
@@ -38,7 +39,7 @@ function StatPill({ label, value }) {
 }
 
 export default function App() {
-  const [screen, setScreen] = useState('timer'); // 'timer' | 'stats'
+  const [screen, setScreen] = useState('timer'); // 'timer' | 'stats' | 'payment'
 
   const [summaryLoading, setSummaryLoading] = useState(true);
   const [summary, setSummary] = useState(null);
@@ -169,13 +170,28 @@ export default function App() {
     <SafeAreaView style={styles.safe}>
       <StatusBar style="dark" />
       <View style={styles.header}>
-        <Text style={styles.brand}>{screen === 'timer' ? 'Focus Timer' : 'Stats'}</Text>
-        <TouchableOpacity
-          onPress={() => setScreen((s) => (s === 'timer' ? 'stats' : 'timer'))}
-          style={styles.headerLink}
-        >
-          <Text style={styles.headerLinkText}>{screen === 'timer' ? 'View stats' : 'Back'}</Text>
-        </TouchableOpacity>
+        <Text style={styles.brand}>
+          {screen === 'timer' ? 'Focus Timer' : screen === 'stats' ? 'Stats' : 'M-Pesa Payment'}
+        </Text>
+        <View style={styles.headerLinksWrap}>
+          {screen !== 'timer' ? (
+            <TouchableOpacity onPress={() => setScreen('timer')} style={styles.headerLink}>
+              <Text style={styles.headerLinkText}>Timer</Text>
+            </TouchableOpacity>
+          ) : null}
+
+          {screen !== 'stats' ? (
+            <TouchableOpacity onPress={() => setScreen('stats')} style={styles.headerLink}>
+              <Text style={styles.headerLinkText}>Stats</Text>
+            </TouchableOpacity>
+          ) : null}
+
+          {screen !== 'payment' ? (
+            <TouchableOpacity onPress={() => setScreen('payment')} style={styles.headerLink}>
+              <Text style={styles.headerLinkText}>M-Pesa</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
 
       {summaryLoading ? (
@@ -228,7 +244,7 @@ export default function App() {
             </View>
           </View>
         </ScrollView>
-      ) : (
+      ) : screen === 'stats' ? (
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           <View style={styles.cards}>
             <View style={styles.card}>
@@ -261,6 +277,10 @@ export default function App() {
             </View>
           </View>
         </ScrollView>
+      ) : (
+        <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+          <MpesaPaymentScreen />
+        </ScrollView>
       )}
     </SafeAreaView>
   );
@@ -292,6 +312,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     color: '#2563EB',
+  },
+  headerLinksWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   loading: {
     flex: 1,
